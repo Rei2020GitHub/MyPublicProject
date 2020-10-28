@@ -102,10 +102,10 @@ class OverlayView : View {
                 neck?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -116,10 +116,10 @@ class OverlayView : View {
                 leftShoulder?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -130,10 +130,10 @@ class OverlayView : View {
                 rightShoulder?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -144,10 +144,10 @@ class OverlayView : View {
                 leftElbow?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -158,10 +158,10 @@ class OverlayView : View {
                 rightElbow?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -172,10 +172,10 @@ class OverlayView : View {
                 leftWrist?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -186,10 +186,10 @@ class OverlayView : View {
                 rightWrist?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -200,19 +200,19 @@ class OverlayView : View {
                 rightHip?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                         neck?.let { point3 ->
                             if (point3.score > 0) {
                                 canvas.drawLine(
-                                    translateX(canvas, (point1.pointX + point2.pointX) / 2),
-                                    translateY(canvas, (point1.pointY + point2.pointY) / 2),
-                                    translateX(canvas, point3.pointX),
-                                    translateY(canvas, point3.pointY),
+                                    translateX((point1.pointX + point2.pointX) / 2),
+                                    translateY((point1.pointY + point2.pointY) / 2),
+                                    translateX(point3.pointX),
+                                    translateY(point3.pointY),
                                     linePaint
                                 )
                             }
@@ -225,10 +225,10 @@ class OverlayView : View {
                 leftKnee?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -239,10 +239,10 @@ class OverlayView : View {
                 rightKnee?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -253,10 +253,10 @@ class OverlayView : View {
                 leftAnkle?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -267,10 +267,10 @@ class OverlayView : View {
                 rightAnkle?.let { point2 ->
                     if (point1.score > 0 && point2.score > 0) {
                         canvas.drawLine(
-                            translateX(canvas, point1.pointX),
-                            translateY(canvas, point1.pointY),
-                            translateX(canvas, point2.pointX),
-                            translateY(canvas, point2.pointY),
+                            translateX(point1.pointX),
+                            translateY(point1.pointY),
+                            translateX(point2.pointX),
+                            translateY(point2.pointY),
                             linePaint
                         )
                     }
@@ -280,8 +280,8 @@ class OverlayView : View {
             value.joints.forEach { point ->
                 if (point.score > 0) {
                     canvas.drawCircle(
-                        translateX(canvas, point.pointX),
-                        translateY(canvas, point.pointY),
+                        translateX(point.pointX),
+                        translateY(point.pointY),
                         10.0f,
                         pointPaint
                     )
@@ -290,11 +290,11 @@ class OverlayView : View {
         }
     }
 
-    private fun translateX(canvas: Canvas, x: Float): Float {
+    private fun translateX(x: Float): Float {
         return (x) * scale + offsetX
     }
 
-    private fun translateY(canvas: Canvas, y: Float): Float {
+    private fun translateY(y: Float): Float {
         return (y) * scale + offsetY
     }
 }
