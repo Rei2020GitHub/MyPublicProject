@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Hand Keypoint Detection Demo</string>
+    <string name="camera">カメラ</string>
+</resources>
