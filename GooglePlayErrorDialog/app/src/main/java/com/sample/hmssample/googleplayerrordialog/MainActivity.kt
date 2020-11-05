@@ -54,12 +54,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkGooglePlayServicesAvailable() {
         val googleApiAvailability = GoogleApiAvailability.getInstance()
-        val googleErrorCode = googleApiAvailability.isGooglePlayServicesAvailable(this)
-        if (googleErrorCode != com.google.android.gms.common.ConnectionResult.SUCCESS) {
-            if (googleApiAvailability.isUserResolvableError(googleErrorCode)) {
+        googleApiAvailability.isGooglePlayServicesAvailable(this).let { code ->
+            if (com.google.android.gms.common.ConnectionResult.SUCCESS != code
+                && googleApiAvailability.isUserResolvableError(code)) {
                 googleApiAvailability.getErrorDialog(
                     this,
-                    googleErrorCode,
+                    code,
                     REQUEST_CODE
                 ).apply {
                     setOnDismissListener {
@@ -72,12 +72,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkHuaweiServicesAvailable() {
         val huaweiApiAvailability = HuaweiApiAvailability.getInstance()
-        val huaweiErrorCode = huaweiApiAvailability.isHuaweiMobileServicesAvailable(this)
-        if (huaweiErrorCode != com.huawei.hms.api.ConnectionResult.SUCCESS) {
-            if (huaweiApiAvailability.isUserResolvableError(huaweiErrorCode)) {
+        huaweiApiAvailability.isHuaweiMobileServicesAvailable(this).let { code ->
+            if (com.huawei.hms.api.ConnectionResult.SUCCESS != code
+                && huaweiApiAvailability.isUserResolvableError(code)) {
                 huaweiApiAvailability.getErrorDialog(
                     this,
-                    huaweiErrorCode,
+                    code,
                     REQUEST_CODE
                 ).apply {
                     setOnDismissListener {
@@ -90,21 +90,33 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkGooglePlayServicesAndHmsAvailable() {
         val googleApiAvailability = GoogleApiAvailability.getInstance()
-        val googleErrorCode = googleApiAvailability.isGooglePlayServicesAvailable(this)
-        if (googleErrorCode != com.google.android.gms.common.ConnectionResult.SUCCESS) {
-            val huaweiApiAvailability = HuaweiApiAvailability.getInstance()
-            val huaweiErrorCode = huaweiApiAvailability.isHuaweiMobileServicesAvailable(this)
-            if (huaweiErrorCode != com.huawei.hms.api.ConnectionResult.SUCCESS) {
-                if (googleApiAvailability.isUserResolvableError(googleErrorCode)) {
-                    googleApiAvailability.getErrorDialog(
-                        this,
-                        googleErrorCode,
-                        REQUEST_CODE
-                    ).apply {
-                        setOnDismissListener {
-                            // Do something after error dialog closed
+        googleApiAvailability.isGooglePlayServicesAvailable(this).let { googleErrorCode ->
+            if (com.google.android.gms.common.ConnectionResult.SUCCESS != googleErrorCode) {
+                val huaweiApiAvailability = HuaweiApiAvailability.getInstance()
+                huaweiApiAvailability.isHuaweiMobileServicesAvailable(this).let { huaweiErrorCode ->
+                    if (com.huawei.hms.api.ConnectionResult.SUCCESS != huaweiErrorCode) {
+                        if (googleApiAvailability.isUserResolvableError(googleErrorCode)) {
+                            googleApiAvailability.getErrorDialog(
+                                this,
+                                googleErrorCode,
+                                REQUEST_CODE
+                            ).apply {
+                                setOnDismissListener {
+                                    // Do something after error dialog closed
+                                }
+                            }.show()
+                        } else if (huaweiApiAvailability.isUserResolvableError(huaweiErrorCode)) {
+                            huaweiApiAvailability.getErrorDialog(
+                                this,
+                                huaweiErrorCode,
+                                REQUEST_CODE
+                            ).apply {
+                                setOnDismissListener {
+                                    // Do something after error dialog closed
+                                }
+                            }.show()
                         }
-                    }.show()
+                    }
                 }
             }
         }
