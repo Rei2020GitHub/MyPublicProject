@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">モバイルサービス確認</string>
+    <string name="gms">GMS</string>
+    <string name="hms">HMS</string>
+    <string name="exist">対応</string>
+    <string name="not_exist">非対応</string>
+    <string name="error_code">。エラーコード=</string>
+    <string name="check_gms">GMSを確認する</string>
+    <string name="check_hms">HMSを確認する</string>
+    <string name="check_gms_hms">先にGMSを確認し、見つからない場合はHMSを確認する</string>
+</resources>

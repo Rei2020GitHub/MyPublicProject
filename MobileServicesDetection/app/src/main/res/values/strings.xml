@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Mobile Services Detection</string>
+    <string name="gms">GMS</string>
+    <string name="hms">HMS</string>
+    <string name="exist"> Exist</string>
+    <string name="not_exist"> Not Exist</string>
+    <string name="error_code">. Error code=</string>
+    <string name="check_gms">Check GMS</string>
+    <string name="check_hms">Check HMS</string>
+    <string name="check_gms_hms">Check GMS -> HMS</string>
+</resources>
