@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Push Demo</string>
+    <string name="get_token">プッシュトークンを再取得（プッシュ通知を受信する）</string>
+    <string name="remove_token">プッシュトークンを削除（プッシュ通知を受信しない）</string>
+    <string name="getting_token">プッシュトークンを取得中</string>
+    <string name="get_token_error">プッシュトークンを取得失敗</string>
+    <string name="removing_token">プッシュトークンを削除中</string>
+    <string name="remove_token_error">プッシュトークンを削除失敗</string>
+    <string name="token_removed">プッシュトークンを削除完了</string>
+    <string name="no_token">プッシュトークンなし</string>
+    <string name="send_notification">プッシュテスト</string>
+    <string name="high">HIGH</string>
+    <string name="normal">NORMAL</string>
+    <string name="low">LOW</string>
+
+</resources>

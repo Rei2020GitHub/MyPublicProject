@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Push Demo</string>
+    <string name="get_token">Get push token</string>
+    <string name="remove_token">Remove push token</string>
+    <string name="getting_token">Getting push token</string>
+    <string name="get_token_error">Get push token error</string>
+    <string name="removing_token">Removing push token</string>
+    <string name="remove_token_error">Remove push token error</string>
+    <string name="token_removed">Push token removed</string>
+    <string name="no_token">No push token</string>
+    <string name="send_notification">Send notification</string>
+    <string name="high">HIGH</string>
+    <string name="normal">NORMAL</string>
+    <string name="low">LOW</string>
+
+</resources>
