@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Auth Demo</string>
+
+    <!-- Facebookによるログインを実装する場合 -->
+    <string name="facebook_app_id">2805335469745479</string>
+    <string name="fb_login_protocol_scheme">fb2805335469745479</string>
+
+    <!-- Twitterによるログインを実装する場合 -->
+    <string name="twitter_app_id">19627363</string>
+    <string name="twitter_app_key">z8K163ONO0oyn0U7VYhFA2kGW</string>
+    <string name="twitter_app_key_secret">I60xcsgDQ4VXf1FhM2pGwkfgNLWLe3KvvpBu98G7Zlfo2Prmft</string>
+
+</resources>
