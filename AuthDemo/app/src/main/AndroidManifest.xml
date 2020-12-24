@@ -17,6 +17,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- Googleによるログインを実装する場合 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="app" android:host="com.sample.hmssample.authdemo" />
+            </intent-filter>
         </activity>
 
         <!-- Facebookによるログインを実装する場合 -->

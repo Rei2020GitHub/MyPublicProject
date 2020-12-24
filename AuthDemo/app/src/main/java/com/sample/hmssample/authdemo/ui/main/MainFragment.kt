@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -27,10 +30,12 @@ import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
 import com.sample.hmssample.authdemo.R
 import com.sample.hmssample.authdemo.databinding.MainFragmentBinding
+import com.sample.hmssample.authdemo.model.GoogleAuth
 import com.squareup.picasso.Picasso
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.TwitterSession
+import org.json.JSONObject
 import java.security.MessageDigest
 
 
@@ -58,24 +63,24 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate<MainFragmentBinding>(
-            inflater,
-            R.layout.main_fragment,
-            container,
-            false
+                inflater,
+                R.layout.main_fragment,
+                container,
+                false
         )
 
         viewModel.avatarUri.observe(viewLifecycleOwner, {
             Picasso
-                .get()
-                .load(it)
-                .fit()
-                .centerInside()
-                .into(binding.imageViewAvatar)
+                    .get()
+                    .load(it)
+                    .fit()
+                    .centerInside()
+                    .into(binding.imageViewAvatar)
         })
         viewModel.displayName.observe(viewLifecycleOwner, {
             if (null != it) {
@@ -99,33 +104,32 @@ class MainFragment : Fragment() {
         binding.buttonSignInFacebook.setReadPermissions("email", "public_profile")
         binding.buttonSignInFacebook.fragment = this
         binding.buttonSignInFacebook.registerCallback(
-            facebookCallbackManager,
-            object : FacebookCallback<LoginResult?> {
-                override fun onSuccess(result: LoginResult?) {
-                    result?.let { result ->
-                        val credential =
-                            FacebookAuthProvider.credentialWithToken(result.accessToken.token)
-                        signIn(credential)
+                facebookCallbackManager,
+                object : FacebookCallback<LoginResult?> {
+                    override fun onSuccess(result: LoginResult?) {
+                        result?.let { result ->
+                            val credential = FacebookAuthProvider.credentialWithToken(result.accessToken.token)
+                            signIn(credential)
+                        }
                     }
-                }
 
-                override fun onCancel() {
-                }
-
-                override fun onError(error: FacebookException?) {
-                    error?.let {
-                        viewModel.addLog("Facebook signIn failed: " + it.message)
+                    override fun onCancel() {
                     }
-                }
-            })
+
+                    override fun onError(error: FacebookException?) {
+                        error?.let {
+                            viewModel.addLog("Facebook signIn failed: " + it.message)
+                        }
+                    }
+                })
 
         // Twitterによるログインを実装する場合
         binding.buttonSignInTwitter.callback = object : com.twitter.sdk.android.core.Callback<TwitterSession>() {
             override fun success(result: Result<TwitterSession>?) {
                 result?.let { result ->
                     val credential = TwitterAuthProvider.credentialWithToken(
-                        result.data.authToken.token,
-                        result.data.authToken.secret
+                            result.data.authToken.token,
+                            result.data.authToken.secret
                     )
                     signIn(credential)
                 }
@@ -144,6 +148,7 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         with(binding) {
             buttonSignInHuaweiId.setOnClickListener{ signInHuaweiId() }
+            buttonSignInGoogle.setOnClickListener{ signInGoogle() }
         }
 
         // HUAWEI IDによるログインを実装する場合
@@ -152,6 +157,11 @@ class MainFragment : Fragment() {
         }
         val huaweiIdAuthParams: HuaweiIdAuthParams = huaweiIdAuthParamsHelper.setAccessToken().createParams()
         huaweiIdAuthService = HuaweiIdAuthManager.getService(activity, huaweiIdAuthParams)
+
+        // Googleによるログインを実装する場合
+        arguments?.getString(GoogleAuth.REDIRECT_URI_KEY_CODE)?.let { code ->
+            signInGoogleCode(code)
+        }
 
         super.onActivityCreated(savedInstanceState)
     }
@@ -191,6 +201,42 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun signInGoogle() {
+        val googleAuth = GoogleAuth()
+        val link = googleAuth.createAuthLink()
+
+        // 外部ブラウザを使用
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+
+        startActivity(intent)
+    }
+
+    private fun signInGoogleCode(code: String) {
+        val context: Context = context ?: return
+        val googleAuth = GoogleAuth()
+        googleAuth.getToken(
+            context,
+            code,
+            object : Response.Listener<String>{
+                override fun onResponse(response: String?) {
+                    response?.let { response ->
+                        val jsonObject = JSONObject(response)
+                        if (jsonObject.has("id_token")) {
+                            val idToken = jsonObject.getString("id_token")
+                            val credential = GoogleAuthProvider.credentialWithToken(idToken)
+                            signIn(credential)
+                        }
+                    }
+                }
+            },
+            object : Response.ErrorListener{
+                override fun onErrorResponse(error: VolleyError?) {
+                    viewModel.addLog("Google signIn failed: $error")
+                }
+            }
+        )
+    }
+
     private fun signOut() {
         AGConnectAuth.getInstance().signOut()
         LoginManager.getInstance().logOut()
@@ -218,8 +264,8 @@ class MainFragment : Fragment() {
         val context: Context = context ?: return null
 
         val info: PackageInfo? = context.packageManager?.getPackageInfo(
-            context.packageName,
-            PackageManager.GET_SIGNATURES
+                context.packageName,
+                PackageManager.GET_SIGNATURES
         )
         info?.let { info ->
             for (signature in info.signatures) {
