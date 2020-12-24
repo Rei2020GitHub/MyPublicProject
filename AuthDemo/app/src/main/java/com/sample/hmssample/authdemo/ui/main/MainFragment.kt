@@ -29,6 +29,7 @@ import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
 import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
 import com.sample.hmssample.authdemo.R
+import com.sample.hmssample.authdemo.WebViewActivity
 import com.sample.hmssample.authdemo.databinding.MainFragmentBinding
 import com.sample.hmssample.authdemo.model.GoogleAuth
 import com.squareup.picasso.Picasso
@@ -206,7 +207,10 @@ class MainFragment : Fragment() {
         val link = googleAuth.createAuthLink()
 
         // 外部ブラウザを使用
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+//        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        val intent = Intent(context, WebViewActivity::class.java).apply {
+            putExtra("link", link)
+        }
 
         startActivity(intent)
     }
