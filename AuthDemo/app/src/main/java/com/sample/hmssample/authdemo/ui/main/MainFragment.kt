@@ -249,8 +249,6 @@ class MainFragment : Fragment() {
             user = result.user
 
             user?.let { user ->
-//                user.updateProfile(ProfileRequest )
-
                 viewModel.provider.value = user.providerId
                 viewModel.avatarUri.value = user.photoUrl
                 viewModel.displayName.value = user.displayName
