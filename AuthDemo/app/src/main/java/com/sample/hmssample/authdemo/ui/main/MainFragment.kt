@@ -207,7 +207,11 @@ class MainFragment : Fragment() {
         val link = googleAuth.createAuthLink()
 
         // 外部ブラウザを使用
+        // 外部に公開されるredirect_uriを用意する必要がある（APIサーバーの用意が必要）
 //        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+
+        // WebViewを使用
+        // 外部に公開されるredirect_uriを用意する必要がない（APIサーバーがいらない）
         val intent = Intent(context, WebViewActivity::class.java).apply {
             putExtra("link", link)
         }

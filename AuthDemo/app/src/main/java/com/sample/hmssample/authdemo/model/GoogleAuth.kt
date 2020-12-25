@@ -14,8 +14,8 @@ class GoogleAuth {
         private const val TOKEN_LINK = "https://oauth2.googleapis.com/token"
         private const val CLIENT_ID = "997214395592-6qmbmd57plkqejepi7v2j3j9t9172ifm.apps.googleusercontent.com"
         private const val CLIENT_SECRET = "YQUF8QGNcsrsVBzgskXciVOX"
-        private const val REDIRECT_URI = "https://f442f59aa1414182903dd786f86459ad.apig.ap-southeast-1.huaweicloudapis.com/develop_service_api"
         private const val SCOPE = "https://www.googleapis.com/auth/userinfo.profile"
+        const val REDIRECT_URI = "https://com.sample.hmssample.authdemo.com/auth"
 
      }
 
