@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Ads Demo</string>
+    <string name="advertising_id_info">広告ID情報</string>
+    <string name="limit_ad_tracking_enabled">パーソナライズド広告制限有効</string>
+    <string name="limit_ad_tracking_disabled">パーソナライズド広告制限無効</string>
+    <string name="connect_install_referrer_client">インストールリファラークライアントに接続</string>
+    <string name="disconnect_install_referrer_client">インストールリファラークライアントを切断</string>
+    <string name="reward_ad">リワード広告</string>
+    <string name="interstitial_ad">Interstitial Ad</string>
+    <string name="ad_id_native">testu7m3hc4gvm</string>
+    <string name="ad_id_native_small">testb65czjivt9</string>
+    <string name="ad_id_native_video">testy63txaom86</string>
+    <string name="ad_id_reward">testx9dtjwj8hp</string>
+    <string name="ad_id_interstitial">testb4znbuh3n2</string>
+    <string name="ad_id_splash">testq6zq98hecj</string>
+    <string name="owner">HUAWEI Developer</string>
+    <string name="copyright_info">Copyright 2020. Huawei Technologies Co., Ltd</string>
+    <string name="ad_flag">Ad</string>
+    <string name="display_form">Display form:</string>
+    <string name="large">Large image with text.</string>
+    <string name="small">Small image with text.</string>
+    <string name="video">Video with text.</string>
+    <string name="load_button_text">LOAD AD</string>
+    <string name="status_ad_loading">Ad loading state: being loaded.</string>
+    <string name="status_load_ad_success">Ad loading state: loaded successfully.</string>
+    <string name="status_load_ad_fail">Ad loading state: failed to be loaded. Error code: </string>
+    <string name="status_play_start">Video playback state: starting to be played.</string>
+    <string name="status_playing">Video playback state: being played.</string>
+    <string name="status_play_end">Video playback state: playback completed.</string>
+    <string name="ad_is_closed">Ad is closed.</string>
+
+</resources>
