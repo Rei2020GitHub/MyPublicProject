@@ -99,9 +99,7 @@ class MainFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        context?.let {
-            showBanner(it)
-        }
+        showBanner()
     }
 
     override fun onDestroy() {
@@ -110,7 +108,7 @@ class MainFragment : Fragment() {
         super.onDestroy()
     }
 
-    private fun showBanner(context: Context) {
+    private fun showBanner() {
         val param = AdParam.Builder().build()
         binding.hwBannerView.loadAd(param)
     }
@@ -266,8 +264,8 @@ class MainFragment : Fragment() {
                     }
 
                     override fun onRewarded(reward: Reward?) {
-                        reward?.let { reward ->
-                            viewModel.addRewardScore(reward.amount)
+                        reward?.let {
+                            viewModel.addRewardScore(it.amount)
                         }
                     }
                 })

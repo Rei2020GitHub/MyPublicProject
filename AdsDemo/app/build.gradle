@@ -2,9 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-// こちらの行をapply plugin: 'com.android.application'の後ろに追加してください。
-apply plugin: 'com.huawei.agconnect'
-
 android {
     // signingConfigsを追加
     signingConfigs {
@@ -93,16 +90,13 @@ dependencies {
 
     // Ads Kit（広告表示）を使う場合はこちらの行を追加してください。バージョンは下記のサイトで確認できます
     // https://developer.huawei.com/consumer/en/doc/HMSCore-Guides-V5/publisher-service-version-change-history-0000001050066909-V5
-    implementation 'com.huawei.hms:ads-lite:13.4.32.303'
+    implementation 'com.huawei.hms:ads-lite:13.4.37.300'
 
     // Ads Kit（OAIDとパーソナライズド広告）を使う場合はこちらの行を追加してください。バージョンは下記のサイトで確認できます
     // https://developer.huawei.com/consumer/en/doc/HMSCore-Guides-V5/identifier-service-version-change-history-0000001050066927-V5
-    implementation 'com.huawei.hms:ads-identifier:3.4.28.313'
+    implementation 'com.huawei.hms:ads-identifier:3.4.37.300'
 
     // Ads Kit（install referrer）を使う場合はこちらの行を追加してください。バージョンは下記のサイトで確認できます
     // https://developer.huawei.com/consumer/en/doc/HMSCore-Guides-V5/identifier-service-version-change-history-0000001050066927-V5
-    implementation 'com.huawei.hms:ads-installreferrer:3.4.28.313'
+    implementation 'com.huawei.hms:ads-installreferrer:3.4.37.300'
 }
-
-// こちらの行を追加
-apply plugin: 'com.huawei.agconnect'

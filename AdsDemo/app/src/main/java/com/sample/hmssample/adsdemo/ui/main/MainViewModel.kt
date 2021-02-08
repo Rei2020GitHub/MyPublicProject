@@ -51,7 +51,7 @@ class MainViewModel : ViewModel() {
         }
 
         override fun onInstallReferrerServiceDisconnected() {
-            Log.i(TAG, "onInstallReferrerServiceDisconnected");
+            Log.i(TAG, "onInstallReferrerServiceDisconnected")
         }
     }
 
@@ -77,9 +77,7 @@ class MainViewModel : ViewModel() {
                 .newBuilder(context)
                 .setTest(BuildConfig.INSTALL_REFERRER_TEST)
                 .build()
-            installReferrerClient?.let {
-                it.startConnection(installReferrerStateListener)
-            }
+            installReferrerClient?.startConnection(installReferrerStateListener)
         }
 
 /*

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.huawei.hms.ads.AdParam
@@ -27,14 +26,12 @@ class SplashActivity : AppCompatActivity() {
 
     private var hasPaused = false
 
-    private val timeoutHandler: Handler = Handler(object : Handler.Callback {
-        override fun handleMessage(msg: Message): Boolean {
-            if (hasWindowFocus()) {
-                jump()
-            }
-            return false
+    private val timeoutHandler: Handler = Handler {
+        if (hasWindowFocus()) {
+            jump()
         }
-    })
+        false
+    }
 
     private val splashAdLoadListener: SplashAdLoadListener = object : SplashAdLoadListener() {
         override fun onAdLoaded() {
