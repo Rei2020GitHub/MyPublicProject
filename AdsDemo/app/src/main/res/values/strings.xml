@@ -6,12 +6,14 @@
     <string name="connect_install_referrer_client">インストールリファラークライアントに接続</string>
     <string name="disconnect_install_referrer_client">インストールリファラークライアントを切断</string>
     <string name="reward_ad">リワード広告</string>
-    <string name="interstitial_ad">Interstitial Ad</string>
+    <string name="interstitial_ad">インタースティシャル広告</string>
+    <string name="roll_ad">ロール広告</string>
     <string name="ad_id_native">testu7m3hc4gvm</string>
     <string name="ad_id_native_small">testb65czjivt9</string>
     <string name="ad_id_native_video">testy63txaom86</string>
     <string name="ad_id_reward">testx9dtjwj8hp</string>
     <string name="ad_id_interstitial">testb4znbuh3n2</string>
+    <string name="ad_id_roll">testy3cglm3pj0</string>
     <string name="ad_id_splash">testq6zq98hecj</string>
     <string name="owner">HUAWEI Developer</string>
     <string name="copyright_info">Copyright 2020. Huawei Technologies Co., Ltd</string>

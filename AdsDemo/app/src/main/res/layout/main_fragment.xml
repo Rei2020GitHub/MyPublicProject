@@ -50,7 +50,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/connect_install_referrer_client"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/button_get_advertising_id_info"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +60,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/disconnect_install_referrer_client"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/button_connect_install_referrer_client"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -97,12 +95,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <Button
+                android:id="@+id/button_roll_ad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/roll_ad"
+                app:layout_constraintTop_toBottomOf="@+id/button_interstitial_ad"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
             <LinearLayout
                 android:id="@+id/native_ad_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/button_interstitial_ad"
+                app:layout_constraintTop_toBottomOf="@+id/button_roll_ad"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 >
@@ -167,6 +175,15 @@
                     android:layout_marginTop="16dp" />
             </LinearLayout>
 
+            <com.huawei.hms.ads.instreamad.InstreamView
+                android:id="@+id/instream_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@+id/native_ad_area"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
             <com.huawei.hms.ads.banner.BannerView
                 android:id="@+id/hw_banner_view"
                 android:layout_width="match_parent"
@@ -175,7 +192,7 @@
                 android:layout_centerHorizontal="true"
                 hwads:adId="testw6vs28auh3"
                 hwads:bannerSize="BANNER_SIZE_360_57"
-                app:layout_constraintTop_toBottomOf="@+id/native_ad_area"
+                app:layout_constraintTop_toBottomOf="@+id/instream_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />

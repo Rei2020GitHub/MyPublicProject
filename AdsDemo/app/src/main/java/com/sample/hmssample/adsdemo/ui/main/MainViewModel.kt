@@ -1,6 +1,7 @@
 package com.sample.hmssample.adsdemo.ui.main
 
 import android.content.Context
+import android.os.RemoteException
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +11,10 @@ import com.huawei.hms.ads.installreferrer.api.InstallReferrerStateListener
 import com.huawei.hms.ads.installreferrer.api.ReferrerDetails
 import com.sample.hmssample.adsdemo.BuildConfig
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.io.IOException
 
 
 class MainViewModel : ViewModel() {
@@ -31,8 +34,18 @@ class MainViewModel : ViewModel() {
             when(responseCode) {
                 InstallReferrerClient.InstallReferrerResponse.OK -> {
                     installReferrerClient?.let {
-                        val referrerDetails: ReferrerDetails = it.installReferrer
-                        referrerDetails
+                        try {
+                            val referrerDetails: ReferrerDetails = it.installReferrer
+                            Log.i(TAG, "Install Referrer = " + referrerDetails.installReferrer)
+                            Log.i(TAG, "Referrer Click Timestamp Millisecond = " + referrerDetails.referrerClickTimestampMillisecond)
+                            Log.i(TAG, "Install Begin Timestamp Millisecond = " + referrerDetails.installBeginTimestampMillisecond)
+                        } catch (exception: RemoteException) {
+                            Log.e(TAG, exception.message, exception)
+                        } catch (exception: IOException) {
+                            Log.e(TAG, exception.message, exception)
+                        } finally {
+                            disconnectInstallReferrerClient()
+                        }
                     }
                 }
                 InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED -> {
@@ -70,19 +83,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun connectInstallReferrerClient(context: Context) {
-        val thread = Thread()
-        thread.run {
-            disconnectInstallReferrerClient()
-            installReferrerClient = InstallReferrerClient
-                .newBuilder(context)
-                .setTest(BuildConfig.INSTALL_REFERRER_TEST)
-                .build()
-            installReferrerClient?.startConnection(installReferrerStateListener)
-        }
-
-/*
         Completable.create{ emitter ->
-            disconnectInstallReferrerClient()
             installReferrerClient = InstallReferrerClient
                 .newBuilder(context)
                 .setTest(BuildConfig.INSTALL_REFERRER_TEST)
@@ -92,12 +93,7 @@ class MainViewModel : ViewModel() {
             }
             emitter.onComplete()
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-            }, {
-            })
-            */
-
+            .subscribe()
     }
 
     fun disconnectInstallReferrerClient() {

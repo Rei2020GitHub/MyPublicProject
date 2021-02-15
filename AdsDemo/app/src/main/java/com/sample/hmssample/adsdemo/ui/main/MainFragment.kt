@@ -15,6 +15,10 @@ import com.huawei.hms.ads.AdListener
 import com.huawei.hms.ads.AdParam
 import com.huawei.hms.ads.InterstitialAd
 import com.huawei.hms.ads.VideoOperator.VideoLifecycleListener
+import com.huawei.hms.ads.instreamad.InstreamAd
+import com.huawei.hms.ads.instreamad.InstreamAdLoadListener
+import com.huawei.hms.ads.instreamad.InstreamAdLoader
+import com.huawei.hms.ads.instreamad.InstreamMediaStateListener
 import com.huawei.hms.ads.nativead.NativeAd
 import com.huawei.hms.ads.nativead.NativeAdConfiguration
 import com.huawei.hms.ads.nativead.NativeAdLoader
@@ -50,12 +54,20 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<MainFragmentBinding>(inflater, R.layout.main_fragment, container, false)
+        binding = DataBindingUtil.inflate<MainFragmentBinding>(
+            inflater,
+            R.layout.main_fragment,
+            container,
+            false
+        )
         viewModel.oaid.observe(viewLifecycleOwner, Observer {
             binding.textViewOaid.text = it
         })
         viewModel.isLimitAdTrackingEnabled.observe(viewLifecycleOwner, Observer {
-            binding.textViewLimitAdTracking.text = if (it) getString(R.string.limit_ad_tracking_enabled) else getString(R.string.limit_ad_tracking_disabled)
+            binding.textViewLimitAdTracking.text =
+                if (it) getString(R.string.limit_ad_tracking_enabled) else getString(
+                    R.string.limit_ad_tracking_disabled
+                )
         })
         viewModel.rewardScore.observe(viewLifecycleOwner, Observer {
             binding.textViewRewardScore.text = it.toString()
@@ -89,11 +101,35 @@ class MainFragment : Fragment() {
                 showInterstitialAd(it)
             }
         }
+        binding.buttonRollAd.setOnClickListener {
+            context?.let {
+                showRollAd(it)
+            }
+        }
         binding.btnLoad.setOnClickListener {
             context?.let {
                 showNativeAd(it)
             }
         }
+        binding.instreamView.setInstreamMediaStateListener(object : InstreamMediaStateListener{
+            override fun onMediaProgress(p0: Int, p1: Int) {
+            }
+
+            override fun onMediaStart(p0: Int) {
+            }
+
+            override fun onMediaPause(p0: Int) {
+            }
+
+            override fun onMediaStop(p0: Int) {
+            }
+
+            override fun onMediaCompletion(p0: Int) {
+            }
+
+            override fun onMediaError(p0: Int, p1: Int, p2: Int) {
+            }
+        })
     }
 
     override fun onStart() {
@@ -105,6 +141,7 @@ class MainFragment : Fragment() {
     override fun onDestroy() {
         globalNativeAd?.destroy()
         rewardAd?.destroy()
+        binding.instreamView.destroy()
         super.onDestroy()
     }
 
@@ -131,7 +168,7 @@ class MainFragment : Fragment() {
         binding.btnLoad.isEnabled = false
 
         val builder = NativeAdLoader.Builder(context, getAdId()).apply {
-            setNativeAdLoadedListener(object : NativeAd.NativeAdLoadedListener{
+            setNativeAdLoadedListener(object : NativeAd.NativeAdLoadedListener {
                 override fun onNativeAdLoaded(nativeAd: NativeAd?) {
                     binding.btnLoad.isEnabled = true
 
@@ -166,7 +203,11 @@ class MainFragment : Fragment() {
     }
 
     private fun bindNativeVideoView(nativeAd: NativeAd): View {
-        val nativeBinding = DataBindingUtil.inflate<NativeVideoTemplateBinding>(LayoutInflater.from(context), R.layout.native_video_template, null, false)
+        val nativeBinding = DataBindingUtil.inflate<NativeVideoTemplateBinding>(
+            LayoutInflater.from(
+                context
+            ), R.layout.native_video_template, null, false
+        )
         val nativeView = nativeBinding.nativeVideoView
 
         nativeView.titleView = nativeBinding.adTitle
@@ -180,7 +221,11 @@ class MainFragment : Fragment() {
     }
 
     private fun bindNativeSmallView(nativeAd: NativeAd): View {
-        val nativeBinding = DataBindingUtil.inflate<NativeSmallTemplateBinding>(LayoutInflater.from(context), R.layout.native_small_template, null, false)
+        val nativeBinding = DataBindingUtil.inflate<NativeSmallTemplateBinding>(
+            LayoutInflater.from(
+                context
+            ), R.layout.native_small_template, null, false
+        )
         val nativeView = nativeBinding.nativeSmallView
 
         nativeView.titleView = nativeBinding.adTitle
@@ -233,7 +278,7 @@ class MainFragment : Fragment() {
         rewardAd = RewardAd(context, getString(R.string.ad_id_reward))
         rewardAd?.loadAd(
             AdParam.Builder().build(),
-            object : RewardAdLoadListener(){
+            object : RewardAdLoadListener() {
                 override fun onRewardedLoaded() {
                     showRewardAd(context)
                 }
@@ -287,5 +332,22 @@ class MainFragment : Fragment() {
         }
         interstitialAd.adListener = listener
         interstitialAd.loadAd(AdParam.Builder().build())
+    }
+
+    private fun showRollAd(context: Context) {
+        val builder: InstreamAdLoader.Builder = InstreamAdLoader.Builder(context, getString(R.string.ad_id_roll))
+        val adLoader: InstreamAdLoader = builder.setTotalDuration(60)
+            .setMaxCount(8)
+            .setInstreamAdLoadListener(object : InstreamAdLoadListener {
+                override fun onAdLoaded(list: MutableList<InstreamAd>?) {
+                    binding.instreamView.setInstreamAds(list)
+                }
+
+                override fun onAdFailed(i: Int) {
+                }
+            })
+            .build()
+
+        adLoader.loadAd(AdParam.Builder().build())
     }
 }
