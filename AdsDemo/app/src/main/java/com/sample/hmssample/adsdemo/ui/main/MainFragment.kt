@@ -11,10 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.huawei.hms.ads.AdListener
-import com.huawei.hms.ads.AdParam
-import com.huawei.hms.ads.InterstitialAd
+import com.huawei.hms.ads.*
 import com.huawei.hms.ads.VideoOperator.VideoLifecycleListener
+import com.huawei.hms.ads.annotation.GlobalApi
 import com.huawei.hms.ads.instreamad.InstreamAd
 import com.huawei.hms.ads.instreamad.InstreamAdLoadListener
 import com.huawei.hms.ads.instreamad.InstreamAdLoader
@@ -111,7 +110,7 @@ class MainFragment : Fragment() {
                 showNativeAd(it)
             }
         }
-        binding.instreamView.setInstreamMediaStateListener(object : InstreamMediaStateListener{
+        binding.instreamView.setInstreamMediaStateListener(object : InstreamMediaStateListener {
             override fun onMediaProgress(p0: Int, p1: Int) {
             }
 
@@ -167,39 +166,76 @@ class MainFragment : Fragment() {
     private fun showNativeAd(context: Context) {
         binding.btnLoad.isEnabled = false
 
-        val builder = NativeAdLoader.Builder(context, getAdId()).apply {
-            setNativeAdLoadedListener(object : NativeAd.NativeAdLoadedListener {
-                override fun onNativeAdLoaded(nativeAd: NativeAd?) {
-                    binding.btnLoad.isEnabled = true
+        val nativeAdLoadedListener = object : NativeAd.NativeAdLoadedListener {
+            override fun onNativeAdLoaded(nativeAd: NativeAd?) {
+                nativeAd?.let {
+                    globalNativeAd?.destroy()
+                    globalNativeAd = it
 
-                    nativeAd?.let {
-                        globalNativeAd?.destroy()
-                        globalNativeAd = nativeAd
-
-                        binding.scrollViewAd.removeAllViews()
-                        binding.scrollViewAd.addView(
-                            if (binding.radioButtonSmall.isChecked) {
-                                bindNativeSmallView(it)
-                            } else {
-                                bindNativeVideoView(it)
-                            }
-                        )
+                    // 動画広告のコールバックを設定
+                    it.videoOperator.videoLifecycleListener = object : VideoOperator.VideoLifecycleListener() {
+                        override fun onVideoStart() {}
+                        override fun onVideoPlay() {}
+                        override fun onVideoPause() {}
+                        override fun onVideoEnd() {}
+                        override fun onVideoMute(var1: Boolean) {}
                     }
+
+                    // 広告の×ボタンを押したときのコールバック
+                    it.setDislikeAdListener {
+                        binding.scrollViewAd.removeAllViews()
+                    }
+
+                    // 取得したネイティブ広告のデータを画面に表示
+                    binding.scrollViewAd.removeAllViews()
+                    binding.scrollViewAd.addView(
+                        if (binding.radioButtonSmall.isChecked) {
+                            bindNativeSmallView(it)
+                        } else {
+                            bindNativeVideoView(it)
+                        }
+                    )
                 }
-            }).setAdListener(object : AdListener() {
-                override fun onAdFailed(errorCode: Int) {
-                    super.onAdFailed(errorCode)
-                    binding.btnLoad.isEnabled = true
-                }
-            })
+            }
         }
 
+        // 広告の各種イベントのコールバック
+        val adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                binding.btnLoad.isEnabled = true
+            }
+
+            override fun onAdFailed(errorCode: Int) {
+                super.onAdFailed(errorCode)
+                binding.btnLoad.isEnabled = true
+            }
+        }
+
+        // ネイティブ広告ロードのビルダ
+        val builder = NativeAdLoader.Builder(context, getAdId())
+            //
+            .setNativeAdLoadedListener(nativeAdLoadedListener)
+            .setAdListener(adListener)
+
+        // 動画広告の設定
+        val videoConfiguration = VideoConfiguration.Builder()
+            // 動画広告の場合、ミュート状態で開始
+            .setStartMuted(true)
+            .build()
+
+        // 広告の設定
         val adConfiguration = NativeAdConfiguration.Builder()
-            .setChoicesPosition(NativeAdConfiguration.ChoicesPosition.BOTTOM_RIGHT) // Set custom attributes.
+            // 動画広告の設定
+            .setVideoConfiguration(videoConfiguration)
+            // true: デフォルトの広告非表示ボタンを使わない, false: デフォルトの広告非表示ボタンを使う
+            .setRequestCustomDislikeThisAd(false)
+            // "i" または "x"の表示位置
+            .setChoicesPosition(NativeAdConfiguration.ChoicesPosition.BOTTOM_RIGHT)
             .build()
 
         val nativeAdLoader = builder.setNativeAdOptions(adConfiguration).build()
-        nativeAdLoader.loadAd(AdParam.Builder().build())
+        nativeAdLoader.loadAds(AdParam.Builder().build(), 10)
     }
 
     private fun bindNativeVideoView(nativeAd: NativeAd): View {
@@ -252,23 +288,6 @@ class MainFragment : Fragment() {
             button?.text = callToAction
         }
         button?.visibility = if (null != nativeAd.callToAction) View.VISIBLE else View.INVISIBLE
-
-        val videoOperator = nativeAd.videoOperator
-        if (videoOperator.hasVideo()) {
-            videoOperator.videoLifecycleListener = object : VideoLifecycleListener() {
-                override fun onVideoStart() {
-                    binding.btnLoad.isEnabled = false
-                }
-
-                override fun onVideoPlay() {
-                    binding.btnLoad.isEnabled = false
-                }
-
-                override fun onVideoEnd() {
-                    binding.btnLoad.isEnabled = true
-                }
-            }
-        }
 
         nativeView.setNativeAd(nativeAd)
     }
@@ -335,7 +354,10 @@ class MainFragment : Fragment() {
     }
 
     private fun showRollAd(context: Context) {
-        val builder: InstreamAdLoader.Builder = InstreamAdLoader.Builder(context, getString(R.string.ad_id_roll))
+        val builder: InstreamAdLoader.Builder = InstreamAdLoader.Builder(
+            context,
+            getString(R.string.ad_id_roll)
+        )
         val adLoader: InstreamAdLoader = builder.setTotalDuration(60)
             .setMaxCount(8)
             .setInstreamAdLoadListener(object : InstreamAdLoadListener {
