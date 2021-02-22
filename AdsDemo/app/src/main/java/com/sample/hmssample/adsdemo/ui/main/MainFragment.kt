@@ -22,10 +22,7 @@ import com.huawei.hms.ads.nativead.NativeAd
 import com.huawei.hms.ads.nativead.NativeAdConfiguration
 import com.huawei.hms.ads.nativead.NativeAdLoader
 import com.huawei.hms.ads.nativead.NativeView
-import com.huawei.hms.ads.reward.Reward
-import com.huawei.hms.ads.reward.RewardAd
-import com.huawei.hms.ads.reward.RewardAdLoadListener
-import com.huawei.hms.ads.reward.RewardAdStatusListener
+import com.huawei.hms.ads.reward.*
 import com.sample.hmssample.adsdemo.R
 import com.sample.hmssample.adsdemo.databinding.MainFragmentBinding
 import com.sample.hmssample.adsdemo.databinding.NativeSmallTemplateBinding
@@ -294,7 +291,12 @@ class MainFragment : Fragment() {
 
     private fun loadRewardAd(context: Context) {
         rewardAd?.destroy()
-        rewardAd = RewardAd(context, getString(R.string.ad_id_reward))
+        rewardAd = RewardAd(context, getString(R.string.ad_id_reward)).apply {
+            setRewardVerifyConfig(RewardVerifyConfig.Builder()
+                .setData("Your reward ads data")
+                .setUserId("Your reward ads user id")
+                .build())
+        }
         rewardAd?.loadAd(
             AdParam.Builder().build(),
             object : RewardAdLoadListener() {
