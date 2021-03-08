@@ -18,10 +18,5 @@ Resources:
           Properties:
             Topic:
               Ref: SNSTopic1
-      VpcConfig:
-        SecurityGroupIds:
-          - sg-b8fc7ef9
-        SubnetIds:
-          - subnet-f807adb0
   SNSTopic1:
     Type: 'AWS::SNS::Topic'
