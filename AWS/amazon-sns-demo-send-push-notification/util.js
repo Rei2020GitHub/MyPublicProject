@@ -16,7 +16,8 @@ module.exports = class Util {
             const response = {
                 'statusCode': statusCode,
                 'headers': {
-                    'Content-type': 'application/json'
+                    'Content-type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
                 },
                 'body': JSON.stringify(body)
             }
