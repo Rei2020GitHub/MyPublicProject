@@ -100,6 +100,7 @@ class MainFragment : Fragment() {
     }
 
     private fun checkAndAskPermission() {
+        binding.buttonStart.isEnabled = false
         context?.let { context ->
             val permissionList: MutableList<String> = mutableListOf()
 
