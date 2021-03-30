@@ -10,7 +10,7 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.sample.hmssample.accountdemo.databinding.WebViewActivityBinding
-import com.sample.hmssample.accountdemo.model.NonHmsHuaweiIdLogicModel
+import com.sample.hmssample.accountdemo.model.NonHmsHuaweiIdLogic
 
 class WebViewActivity : AppCompatActivity() {
 
@@ -34,7 +34,7 @@ class WebViewActivity : AppCompatActivity() {
             webView.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                     request?.url?.let { url ->
-                        if (url.toString().contains(NonHmsHuaweiIdLogicModel.REDIRECT_URI)) {
+                        if (url.toString().contains(NonHmsHuaweiIdLogic.REDIRECT_URI)) {
                             val intent = Intent(applicationContext, MainActivity::class.java).apply {
                                 data = url
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

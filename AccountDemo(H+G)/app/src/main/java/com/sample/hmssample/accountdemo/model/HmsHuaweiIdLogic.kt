@@ -12,7 +12,7 @@ import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
 import com.sample.hmssample.accountdemo.ui.main.MainViewModel
 
-class HmsHuaweiIdLogicModel(private val viewModel: MainViewModel) : BaseHuaweiIdLogicModel(viewModel) {
+class HmsHuaweiIdLogic(private val viewModel: MainViewModel) : HuaweiIdLogic {
 
     companion object {
         private const val REQUEST_CODE_SIGN_IN_AUTHORIZATION_CODE = 1000

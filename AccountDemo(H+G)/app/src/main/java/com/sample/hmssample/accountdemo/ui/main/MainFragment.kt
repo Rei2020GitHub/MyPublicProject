@@ -63,17 +63,17 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         binding.buttonSignInAuthorizationCode.setOnClickListener{
-            viewModel.huaweiIdLogicModel.signIn(this)
+            viewModel.huaweiIdLogic.signIn(this)
         }
         binding.buttonSignOut.setOnClickListener{
-            viewModel.huaweiIdLogicModel.signOut()
+            viewModel.huaweiIdLogic.signOut()
         }
         binding.buttonCancelAuthorization.setOnClickListener{
-            viewModel.huaweiIdLogicModel.cancelAuthorization(requireContext())
+            viewModel.huaweiIdLogic.cancelAuthorization(requireContext())
         }
 
         activity?.let { activity ->
-            viewModel.huaweiIdLogicModel.update(requireContext(), activity.intent)
+            viewModel.huaweiIdLogic.update(requireContext(), activity.intent)
         }
 
         super.onActivityCreated(savedInstanceState)
@@ -82,6 +82,6 @@ class MainFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        viewModel.huaweiIdLogicModel.onActivityResult(requestCode, resultCode, data)
+        viewModel.huaweiIdLogic.onActivityResult(requestCode, resultCode, data)
     }
 }

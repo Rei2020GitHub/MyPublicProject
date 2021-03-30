@@ -15,9 +15,7 @@ import com.sample.hmssample.accountdemo.ui.main.MainViewModel
 import org.json.JSONObject
 
 
-class NonHmsHuaweiIdLogicModel(private val viewModel: MainViewModel) : BaseHuaweiIdLogicModel(
-    viewModel
-) {
+class NonHmsHuaweiIdLogic(private val viewModel: MainViewModel) : HuaweiIdLogic {
 
     companion object {
         private const val AUTH_LINK = "https://oauth-login.cloud.huawei.com/oauth2/v3/authorize"

@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sample.hmssample.accountdemo.Utils
-import com.sample.hmssample.accountdemo.model.NonHmsHuaweiIdLogicModel
-import com.sample.hmssample.accountdemo.model.BaseHuaweiIdLogicModel
-import com.sample.hmssample.accountdemo.model.HmsHuaweiIdLogicModel
+import com.sample.hmssample.accountdemo.model.NonHmsHuaweiIdLogic
+import com.sample.hmssample.accountdemo.model.HmsHuaweiIdLogic
+import com.sample.hmssample.accountdemo.model.HuaweiIdLogic
 
 class MainViewModel(private val isHuaweiMobileServicesAvailable: Boolean) : ViewModel() {
     companion object {
@@ -18,13 +18,13 @@ class MainViewModel(private val isHuaweiMobileServicesAvailable: Boolean) : View
     val displayName = MutableLiveData<String>()
     val textLog = MutableLiveData<String>("")
 
-    val huaweiIdLogicModel: BaseHuaweiIdLogicModel = generateHuaweiIdLogicModel()
+    val huaweiIdLogic: HuaweiIdLogic = generateHuaweiIdLogic()
 
-    private fun generateHuaweiIdLogicModel(): BaseHuaweiIdLogicModel {
+    private fun generateHuaweiIdLogic(): HuaweiIdLogic {
         return if (isHuaweiMobileServicesAvailable) {
-            HmsHuaweiIdLogicModel(this)
+            HmsHuaweiIdLogic(this)
         } else {
-            NonHmsHuaweiIdLogicModel(this)
+            NonHmsHuaweiIdLogic(this)
         }
     }
 
