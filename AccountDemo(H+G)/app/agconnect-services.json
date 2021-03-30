@@ -1,0 +1,12 @@
+{
+	"client":{
+		"cp_id":"5190081000043451377",
+		"product_id":"736430079244621833",
+		"client_id":"443239242974364672",
+		"client_secret":"E6838FD3DAD1C1A036CDDDA3CE8586278367E8AA00D4C928D33D4A26EA29C3B6",
+		"app_id":"102833627",
+		"package_name":"com.sample.hmssample.accountdemo",
+		"api_key":"CgB6e3x9wVoAHbyogsoAYfNVle42WxNXW4Fln7eR5TvFIVopOkgQfeC+HDrzAjKWCKDUqPWhkFf7WswcWC5pRzpK"
+	},
+	"configuration_version":"1.0"
+}

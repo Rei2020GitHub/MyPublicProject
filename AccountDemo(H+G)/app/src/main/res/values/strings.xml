@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Account Demo</string>
+
+    <string name="button_sign_out">ログアウト</string>
+    <string name="button_cancel_authorization">ログイン権限取り消し</string>
+
+</resources>

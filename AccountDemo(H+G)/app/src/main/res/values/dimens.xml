@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="text_log_margin">8dp</dimen>
+    <dimen name="text_log_font_size">16sp</dimen>
+</resources>
