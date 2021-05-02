@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless Specification template describing your function.
+Resources:
+  hmspushdemosendpushnotification:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs14.x
+      CodeUri: .
+      Description: ''
+      MemorySize: 128
+      Timeout: 10
+      Role: 'arn:aws:iam::316869381796:role/LambdaVPC'
+      Events:
+        SNS1:
+          Type: SNS
+          Properties:
+            Topic:
+              Ref: SNSTopic1
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-05bef71f8019630f4
+        SubnetIds:
+          - subnet-0ffb3f614679eb4d2
+  SNSTopic1:
+    Type: 'AWS::SNS::Topic'
