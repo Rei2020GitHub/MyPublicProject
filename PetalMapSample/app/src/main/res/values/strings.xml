@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PetalMapSample</string>
+    <string-array name="route_planning_type">
+        <item>drive</item>
+        <item>walk</item>
+        <item>bicycle</item>
+        <item>bus</item>
+    </string-array>
+</resources>

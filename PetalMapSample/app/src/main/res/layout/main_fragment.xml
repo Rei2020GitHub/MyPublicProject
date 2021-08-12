@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <EditText
+            android:id="@+id/edit_text_near_by_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="[NEARBY PLACE SEARCH] keyword"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/button_near_by_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nearby Place Search"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_near_by_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/edit_text_keyword_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="[KEYWORD SEARCH] keyword"
+            app:layout_constraintTop_toBottomOf="@+id/button_near_by_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/button_keyword_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Keyword Search"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_keyword_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/edit_text_route_planning_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="[ROUTE PLANNING] from"
+            app:layout_constraintTop_toBottomOf="@+id/button_keyword_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/edit_text_route_planning_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="[ROUTE PLANNING] to"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_route_planning_from"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_route_planning_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:entries="@array/route_planning_type"
+            android:spinnerMode="dialog"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_route_planning_to"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/button_route_planning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Route Planning"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_route_planning_to"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/edit_text_poi_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="[POI DETAILS] latitude,longitude"
+            app:layout_constraintTop_toBottomOf="@+id/button_route_planning"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/button_poi_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="POI Details"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_poi_details"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

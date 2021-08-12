@@ -1,0 +1,2 @@
+rootProject.name = "PetalMapSample"
+include ':app'
