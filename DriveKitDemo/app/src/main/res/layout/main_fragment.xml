@@ -180,6 +180,26 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     />
 
+                <EditText
+                    android:id="@+id/edit_text_folder_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edit_text_save_content_hint"
+                    app:layout_constraintTop_toBottomOf="@+id/button_drive_load"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <Button
+                    android:id="@+id/button_drive_create_folder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_text_save_file"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_text_folder_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView

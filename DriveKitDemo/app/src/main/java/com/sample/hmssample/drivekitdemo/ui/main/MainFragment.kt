@@ -38,12 +38,14 @@ class MainFragment : Fragment() {
         binding = DataBindingUtil.inflate<MainFragmentBinding>(inflater, R.layout.main_fragment, container, false)
 
         viewModel.avatarUri.observe(viewLifecycleOwner, {
-            Picasso
-                .with(requireContext())
-                .load(it)
-                .fit()
-                .centerInside()
-                .into(binding.imageViewAvatar)
+            if (it.isNotBlank()) {
+                Picasso
+                    .with(requireContext())
+                    .load(it)
+                    .fit()
+                    .centerInside()
+                    .into(binding.imageViewAvatar)
+            }
         })
         viewModel.displayName.observe(viewLifecycleOwner, {
             binding.textViewDisplayName.text = it
@@ -104,6 +106,15 @@ class MainFragment : Fragment() {
         }
         binding.buttonDriveLoad.setOnClickListener {
             viewModel.loadFromHuaweiDrive(requireContext())
+        }
+        binding.buttonDriveCreateFolder.setOnClickListener {
+            if (binding.editTextFolderName.text.toString().isNotEmpty()) {
+                viewModel.createFolderInHuaweiDrive(
+                    binding.editTextFolderName.text.toString()
+                )
+            } else {
+                viewModel.addLog("Please enter folder name")
+            }
         }
 
         super.onViewCreated(view, savedInstanceState)

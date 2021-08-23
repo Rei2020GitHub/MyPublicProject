@@ -227,6 +227,27 @@ class MainViewModel : ViewModel() {
         return file
     }
 
+    fun createFolderInHuaweiDrive(folderName: String) {
+        if (!isHuaweiDriveReady()) {
+            addLog("Please connect to HUAWEI Drive")
+            return
+        }
+
+        huaweiDriveLogic?.let { huaweiDriveLogic ->
+            Single.create<com.huawei.cloud.services.drive.model.File?> { emitter ->
+                // データをHUAWEI Driveにアップロードする
+                val file = huaweiDriveLogic.createFolder(folderName)
+                emitter.onSuccess(file)
+            }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ file ->
+                    addLog("Create folder success : " + file.toPrettyString())
+                }, {
+                    addLog("Create folder fail : $it")
+                })
+        }
+    }
+
     fun addLog(message: String) {
         Log.i(TAG, message)
         textLog.postValue(textLog.value + Utils.getLogStringLine(message))

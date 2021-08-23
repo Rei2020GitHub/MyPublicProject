@@ -5,7 +5,8 @@
     <string name="button_drive_connect">ドライブ接続</string>
     <string name="button_drive_info">ドライブ情報</string>
     <string name="edit_text_save_content_hint">保存内容</string>
-    <string name="edit_text_save_file">保存(入力がファイルの場合)</string>
-    <string name="edit_text_save_buffer">保存(入力がバッファの場合)</string>
+    <string name="edit_text_save_file">アプリフォルダに保存(入力がファイルの場合)</string>
+    <string name="edit_text_save_buffer">アプリフォルダに保存(入力がバッファの場合)</string>
     <string name="edit_text_load">ロード</string>
+    <string name="edit_text_create_folder">ロード</string>
 </resources>

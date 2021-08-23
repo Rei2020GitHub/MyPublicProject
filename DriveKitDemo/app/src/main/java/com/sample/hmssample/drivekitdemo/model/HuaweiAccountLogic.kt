@@ -32,7 +32,10 @@ class HuaweiAccountLogic(private val viewModel: MainViewModel) {
     }
 
     private fun signInInit(context: Context) {
-        val scopeList: List<Scope> = listOf(Scope(DriveScopes.SCOPE_DRIVE_APPDATA))
+        val scopeList: List<Scope> = listOf(
+            Scope(DriveScopes.SCOPE_DRIVE_APPDATA),     // アプリデータのアクセス権限
+            Scope(DriveScopes.SCOPE_DRIVE_FILE)         // アプリが作ったファイルとフォルダのアクセス権限
+        )
         val param = AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
             .setAccessToken()
             .setIdToken()

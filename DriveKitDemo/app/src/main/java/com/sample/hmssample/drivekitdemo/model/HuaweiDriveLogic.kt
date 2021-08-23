@@ -117,6 +117,21 @@ class HuaweiDriveLogic(
         return null
     }
 
+    // HUAWEI Driveでフォルダを作成する
+    fun createFolder(folderName: String): com.huawei.cloud.services.drive.model.File? {
+        drive?.let { drive ->
+            // ドライブにアプリケーションの専用フォルダを作成
+            val appProperties: Map<String, String> = mutableMapOf("appProperties" to "property")
+            val file = com.huawei.cloud.services.drive.model.File()
+                .setFileName(folderName)
+                .setMimeType("application/vnd.huawei-apps.folder")
+                .setAppSettings(appProperties)
+            return drive.files().create(file).execute()
+        }
+
+        return null
+    }
+
     // HUAWEI Driveにファイルをアップロードする
     fun saveFile(localFile: File, driveFilename: String): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
