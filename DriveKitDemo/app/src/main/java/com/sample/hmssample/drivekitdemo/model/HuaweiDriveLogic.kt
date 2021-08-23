@@ -23,6 +23,7 @@ class HuaweiDriveLogic(
     companion object {
         private const val DIRECT_UPLOAD_MAX_SIZE = 20L * 1024L * 1024L
         private const val DIRECT_DOWNLOAD_MAX_SIZE = 20L * 1024L * 1024L
+        private const val PAGE_SIZE = 10
     }
 
     private var credential: DriveCredential? = null
@@ -48,46 +49,22 @@ class HuaweiDriveLogic(
         return drive?.about()?.get()?.setFields("*")?.execute()
     }
 
-    // HUAWEI Driveからファイルを検索する
-    private fun getFile(fileName: String, isApplicationFolder: Boolean): com.huawei.cloud.services.drive.model.File? {
+    // HUAWEI Driveからファイルまたはフォルダを検索する
+    private fun getFile(fileName: String, isFolder: Boolean, isApplicationData: Boolean): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
-            val queryFile = "fileName = '$fileName' and mimeType != 'application/vnd.huawei-apps.folder'"
+            val queryFile = "fileName = '$fileName' and mimeType " + (if (isFolder) "=" else "!=") + " 'application/vnd.huawei-apps.folder'"
             val files = drive.files().list().setQueryParam(queryFile)
-                .setPageSize(10)
+                .setPageSize(PAGE_SIZE)
                 .setOrderBy("fileName")
                 .setFields("category,nextCursor,files/id,files/fileName,files/size").apply {
-                    if (isApplicationFolder) {
-                        setContainers("applicationData")
-                    }
-                }
-                .execute()
-
-            files.files.forEach { file ->
-                if (file.fileName == fileName) {
-                    return file
-                }
-            }
-        }
-
-        return null
-    }
-
-    // HUAWEI Driveからアプリケーションフォルダを取得する
-    private fun getFolder(folderName: String, isApplicationFolder: Boolean): com.huawei.cloud.services.drive.model.File? {
-        drive?.let { drive ->
-            val queryFile = "fileName = '$folderName' and mimeType = 'application/vnd.huawei-apps.folder'"
-            val files = drive.files().list().setQueryParam(queryFile)
-                .setPageSize(10)
-                .setOrderBy("fileName")
-                .setFields("category,nextCursor,files/id,files/fileName,files/size").apply {
-                    if (isApplicationFolder) {
+                    if (isApplicationData) {
                         containers = "applicationData"
                     }
                 }
                 .execute()
 
             files.files.forEach { file ->
-                if (file.fileName == folderName) {
+                if (file.fileName == fileName) {
                     return file
                 }
             }
@@ -105,15 +82,14 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveでフォルダを作成する
-    fun createFolder(folderName: String, isApplicationFolder: Boolean): com.huawei.cloud.services.drive.model.File? {
+    fun createFolder(folderName: String, isApplicationData: Boolean): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
-            // ドライブにアプリケーションの専用フォルダを作成
             val appProperties: Map<String, String> = mutableMapOf("appProperties" to "property")
             val file = com.huawei.cloud.services.drive.model.File()
                 .setFileName(folderName)
                 .setMimeType("application/vnd.huawei-apps.folder")
                 .setAppSettings(appProperties).apply {
-                    if (isApplicationFolder) {
+                    if (isApplicationData) {
                         parentFolder = listOf("applicationData")
                     }
                 }
@@ -124,17 +100,17 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveにファイルをアップロードする
-    fun saveFile(localFile: File, driveFilename: String, folderName: String, isApplicationFolder: Boolean): com.huawei.cloud.services.drive.model.File? {
+    fun saveFile(localFile: File, driveFilename: String, folderName: String, isApplicationData: Boolean): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
             // ドライブにフォルダを作成
-            var directoryCreated = getFolder(folderName, isApplicationFolder)
+            var directoryCreated = getFile(folderName, true, isApplicationData)
             if (null == directoryCreated) {
-                directoryCreated = createFolder(folderName, isApplicationFolder)
+                directoryCreated = createFolder(folderName, isApplicationData)
             }
 
             directoryCreated?.let { directoryCreated ->
                 // 既存ファイルを削除
-                val oldFile = getFile(driveFilename, isApplicationFolder)
+                val oldFile = getFile(driveFilename, false, isApplicationData)
                 if (null != oldFile) {
                     deleteFile(oldFile)
                 }
@@ -161,17 +137,17 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveにデータをアップロードする
-    fun saveBuffer(driveFilename: String, folderName: String, isApplicationFolder: Boolean, inputStream: InputStream, inputStreamLength: Long, mimeType: String): com.huawei.cloud.services.drive.model.File? {
+    fun saveBuffer(driveFilename: String, folderName: String, isApplicationData: Boolean, inputStream: InputStream, inputStreamLength: Long, mimeType: String): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
             // ドライブにフォルダを作成
-            var directoryCreated = getFolder(folderName, isApplicationFolder)
+            var directoryCreated = getFile(folderName, true, isApplicationData)
             if (null == directoryCreated) {
-                directoryCreated = createFolder(folderName, isApplicationFolder)
+                directoryCreated = createFolder(folderName, isApplicationData)
             }
 
             directoryCreated?.let { directoryCreated ->
                 // 既存ファイルを削除
-                val oldFile = getFile(driveFilename, isApplicationFolder)
+                val oldFile = getFile(driveFilename, false, isApplicationData)
                 if (null != oldFile) {
                     deleteFile(oldFile)
                 }
@@ -194,25 +170,9 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveからファイルをダウンロード
-    fun load(filename: String, dest: File, isApplicationFolder: Boolean) {
-        drive?.let { drive ->
-            val queryFile = "fileName = '$filename' and mimeType != 'application/vnd.huawei-apps.folder'"
-            val files = drive.files().list().setQueryParam(queryFile)
-                .setPageSize(10)
-                .setOrderBy("fileName")
-                .setFields("category,nextCursor,files/id,files/fileName,files/size").apply {
-                    if (isApplicationFolder) {
-                        setContainers("applicationData")
-                    }
-                }
-                .execute()
-
-            files.files.forEach { file ->
-                if (file.fileName == filename) {
-                    download(file, dest)
-                    return@forEach
-                }
-            }
+    fun load(filename: String, dest: File, isApplicationData: Boolean) {
+        getFile(filename, false, isApplicationData)?.let { file ->
+            download(file, dest)
         }
     }
 
