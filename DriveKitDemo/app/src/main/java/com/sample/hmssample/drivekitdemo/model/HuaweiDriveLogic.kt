@@ -23,7 +23,6 @@ class HuaweiDriveLogic(
     companion object {
         private const val DIRECT_UPLOAD_MAX_SIZE = 20L * 1024L * 1024L
         private const val DIRECT_DOWNLOAD_MAX_SIZE = 20L * 1024L * 1024L
-        private const val PAGE_SIZE = 10
     }
 
     private var credential: DriveCredential? = null
@@ -54,7 +53,6 @@ class HuaweiDriveLogic(
         drive?.let { drive ->
             val queryFile = "fileName = '$fileName' and mimeType " + (if (isFolder) "=" else "!=") + " 'application/vnd.huawei-apps.folder'"
             val files = drive.files().list().setQueryParam(queryFile)
-                .setPageSize(PAGE_SIZE)
                 .setOrderBy("fileName")
                 .setFields("category,nextCursor,files/id,files/fileName,files/size").apply {
                     if (isApplicationData) {
@@ -63,11 +61,7 @@ class HuaweiDriveLogic(
                 }
                 .execute()
 
-            files.files.forEach { file ->
-                if (file.fileName == fileName) {
-                    return file
-                }
-            }
+            return files.files.firstOrNull { it.fileName == fileName }
         }
 
         return null
