@@ -8,10 +8,8 @@ import com.huawei.cloud.base.http.FileContent
 import com.huawei.cloud.base.http.InputStreamContent
 import com.huawei.cloud.services.drive.Drive
 import com.huawei.cloud.services.drive.model.About
-import com.sample.hmssample.drivekitdemo.ui.main.MainViewModel
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 import java.io.InputStream
 
 
@@ -23,7 +21,6 @@ class HuaweiDriveLogic(
 ) {
 
     companion object {
-        private const val APP_FOLDER_NAME = "YourAppFolderName"
         private const val DIRECT_UPLOAD_MAX_SIZE = 20L * 1024L * 1024L
         private const val DIRECT_DOWNLOAD_MAX_SIZE = 20L * 1024L * 1024L
     }
@@ -81,18 +78,21 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveからアプリケーションフォルダを取得する
-    private fun getApplicationFolder(): com.huawei.cloud.services.drive.model.File? {
+    private fun getFolder(folderName: String, isApplicationFolder: Boolean): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
-            val containers = "applicationData"
-            val queryFile = "fileName = '$APP_FOLDER_NAME' and mimeType = 'application/vnd.huawei-apps.folder'"
+            val queryFile = "fileName = '$folderName' and mimeType = 'application/vnd.huawei-apps.folder'"
             val files = drive.files().list().setQueryParam(queryFile)
                 .setPageSize(10)
                 .setOrderBy("fileName")
-                .setFields("category,nextCursor,files/id,files/fileName,files/size")
-                .setContainers(containers).execute()
+                .setFields("category,nextCursor,files/id,files/fileName,files/size").apply {
+                    if (isApplicationFolder) {
+                        containers = "applicationData"
+                    }
+                }
+                .execute()
 
             files.files.forEach { file ->
-                if (file.fileName == APP_FOLDER_NAME) {
+                if (file.fileName == folderName) {
                     return file
                 }
             }
@@ -101,31 +101,19 @@ class HuaweiDriveLogic(
         return null
     }
 
-    // HUAWEI Driveでアプリケーションフォルダを作成する
-    private fun createApplicationFolder(): com.huawei.cloud.services.drive.model.File? {
-        drive?.let { drive ->
-            // ドライブにアプリケーションの専用フォルダを作成
-            val appProperties: Map<String, String> = mutableMapOf("appProperties" to "property")
-            val file = com.huawei.cloud.services.drive.model.File()
-                .setFileName(APP_FOLDER_NAME)
-                .setMimeType("application/vnd.huawei-apps.folder")
-                .setAppSettings(appProperties)
-                .setParentFolder(listOf("applicationData"))
-            return drive.files().create(file).execute()
-        }
-
-        return null
-    }
-
     // HUAWEI Driveでフォルダを作成する
-    fun createFolder(folderName: String): com.huawei.cloud.services.drive.model.File? {
+    fun createFolder(folderName: String, isApplicationFolder: Boolean): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
             // ドライブにアプリケーションの専用フォルダを作成
             val appProperties: Map<String, String> = mutableMapOf("appProperties" to "property")
             val file = com.huawei.cloud.services.drive.model.File()
                 .setFileName(folderName)
                 .setMimeType("application/vnd.huawei-apps.folder")
-                .setAppSettings(appProperties)
+                .setAppSettings(appProperties).apply {
+                    if (isApplicationFolder) {
+                        parentFolder = listOf("applicationData")
+                    }
+                }
             return drive.files().create(file).execute()
         }
 
@@ -133,12 +121,12 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveにファイルをアップロードする
-    fun saveFile(localFile: File, driveFilename: String): com.huawei.cloud.services.drive.model.File? {
+    fun saveFile(localFile: File, driveFilename: String, folderName: String, isApplicationFolder: Boolean): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
-            // ドライブにアプリケーションの専用フォルダを作成
-            var directoryCreated = getApplicationFolder()
+            // ドライブにフォルダを作成
+            var directoryCreated = getFolder(folderName, isApplicationFolder)
             if (null == directoryCreated) {
-                directoryCreated = createApplicationFolder()
+                directoryCreated = createFolder(folderName, isApplicationFolder)
             }
 
             directoryCreated?.let { directoryCreated ->
@@ -170,12 +158,12 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveにデータをアップロードする
-    fun saveBuffer(driveFilename: String, inputStream: InputStream, inputStreamLength: Long, mimeType: String): com.huawei.cloud.services.drive.model.File? {
+    fun saveBuffer(driveFilename: String, folderName: String, isApplicationFolder: Boolean, inputStream: InputStream, inputStreamLength: Long, mimeType: String): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
-            // ドライブにアプリケーションの専用フォルダを作成
-            var directoryCreated = getApplicationFolder()
+            // ドライブにフォルダを作成
+            var directoryCreated = getFolder(folderName, isApplicationFolder)
             if (null == directoryCreated) {
-                directoryCreated = createApplicationFolder()
+                directoryCreated = createFolder(folderName, isApplicationFolder)
             }
 
             directoryCreated?.let { directoryCreated ->
@@ -203,15 +191,18 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveからファイルをダウンロード
-    fun load(filename: String, dest: File) {
+    fun load(filename: String, dest: File, isApplicationFolder: Boolean) {
         drive?.let { drive ->
-            val containers = "applicationData"
             val queryFile = "fileName = '$filename' and mimeType != 'application/vnd.huawei-apps.folder'"
             val files = drive.files().list().setQueryParam(queryFile)
                 .setPageSize(10)
                 .setOrderBy("fileName")
-                .setFields("category,nextCursor,files/id,files/fileName,files/size")
-                .setContainers(containers).execute()
+                .setFields("category,nextCursor,files/id,files/fileName,files/size").apply {
+                    if (isApplicationFolder) {
+                        setContainers("applicationData")
+                    }
+                }
+                .execute()
 
             files.files.forEach { file ->
                 if (file.fileName == filename) {

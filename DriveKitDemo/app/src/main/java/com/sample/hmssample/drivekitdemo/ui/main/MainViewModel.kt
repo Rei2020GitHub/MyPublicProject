@@ -23,6 +23,7 @@ class MainViewModel : ViewModel() {
         private val TAG: String = MainViewModel.javaClass.simpleName
         private const val LOCAL_FILE_NAME = "local_cache.txt"
         private const val DRIVE_FILE_NAME = "drive_cache.txt"
+        private const val APP_FOLDER_NAME = "YourAppFolderName"
     }
 
     val unionId = MutableLiveData<String>()
@@ -133,7 +134,7 @@ class MainViewModel : ViewModel() {
                 // データを端末のキャッシュフォルダに保存する
                 val localFile = createLocalTempFile(context, content, LOCAL_FILE_NAME)
                 // 端末のファイルをHUAWEI Driveにアップロードする
-                val file = huaweiDriveLogic.saveFile(localFile, DRIVE_FILE_NAME)
+                val file = huaweiDriveLogic.saveFile(localFile, DRIVE_FILE_NAME, APP_FOLDER_NAME, true)
                 emitter.onSuccess(file)
             }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -159,7 +160,7 @@ class MainViewModel : ViewModel() {
                 val mimeType = "text/plain"
 
                 // データをHUAWEI Driveにアップロードする
-                val file = huaweiDriveLogic.saveBuffer(DRIVE_FILE_NAME, inputStream, inputStreamLength, mimeType)
+                val file = huaweiDriveLogic.saveBuffer(DRIVE_FILE_NAME, APP_FOLDER_NAME, true, inputStream, inputStreamLength, mimeType)
                 emitter.onSuccess(file)
             }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -183,7 +184,7 @@ class MainViewModel : ViewModel() {
                 // 保存先を指定する
                 val localFile = File(context.cacheDir, LOCAL_FILE_NAME)
                 // HUAWEI Driveからファイルをダウンロードし、指定した保存先に保存する
-                huaweiDriveLogic.load(DRIVE_FILE_NAME, localFile)
+                huaweiDriveLogic.load(DRIVE_FILE_NAME, localFile, true)
 
                 // 保存した後に、保存先を開き、中身を読み込む
                 val bufferedReader = BufferedReader(InputStreamReader(localFile.inputStream(), StandardCharsets.UTF_8))
@@ -236,7 +237,7 @@ class MainViewModel : ViewModel() {
         huaweiDriveLogic?.let { huaweiDriveLogic ->
             Single.create<com.huawei.cloud.services.drive.model.File?> { emitter ->
                 // データをHUAWEI Driveにアップロードする
-                val file = huaweiDriveLogic.createFolder(folderName)
+                val file = huaweiDriveLogic.createFolder(folderName, false)
                 emitter.onSuccess(file)
             }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
