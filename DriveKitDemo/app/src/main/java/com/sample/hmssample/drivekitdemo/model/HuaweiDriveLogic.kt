@@ -49,15 +49,18 @@ class HuaweiDriveLogic(
     }
 
     // HUAWEI Driveからファイルを検索する
-    private fun getFile(fileName: String): com.huawei.cloud.services.drive.model.File? {
+    private fun getFile(fileName: String, isApplicationFolder: Boolean): com.huawei.cloud.services.drive.model.File? {
         drive?.let { drive ->
-            val containers = "applicationData"
             val queryFile = "fileName = '$fileName' and mimeType != 'application/vnd.huawei-apps.folder'"
             val files = drive.files().list().setQueryParam(queryFile)
                 .setPageSize(10)
                 .setOrderBy("fileName")
-                .setFields("category,nextCursor,files/id,files/fileName,files/size")
-                .setContainers(containers).execute()
+                .setFields("category,nextCursor,files/id,files/fileName,files/size").apply {
+                    if (isApplicationFolder) {
+                        setContainers("applicationData")
+                    }
+                }
+                .execute()
 
             files.files.forEach { file ->
                 if (file.fileName == fileName) {
@@ -67,14 +70,6 @@ class HuaweiDriveLogic(
         }
 
         return null
-    }
-
-    // HUAWEI Driveからファイルを削除する
-    private fun deleteFile(target: com.huawei.cloud.services.drive.model.File) {
-        drive?.let { drive ->
-            val deleteFile = drive.files().delete(target.id)
-            deleteFile.execute()
-        }
     }
 
     // HUAWEI Driveからアプリケーションフォルダを取得する
@@ -99,6 +94,14 @@ class HuaweiDriveLogic(
         }
 
         return null
+    }
+
+    // HUAWEI Driveからファイルを削除する
+    private fun deleteFile(target: com.huawei.cloud.services.drive.model.File) {
+        drive?.let { drive ->
+            val deleteFile = drive.files().delete(target.id)
+            deleteFile.execute()
+        }
     }
 
     // HUAWEI Driveでフォルダを作成する
@@ -131,7 +134,7 @@ class HuaweiDriveLogic(
 
             directoryCreated?.let { directoryCreated ->
                 // 既存ファイルを削除
-                val oldFile = getFile(driveFilename)
+                val oldFile = getFile(driveFilename, isApplicationFolder)
                 if (null != oldFile) {
                     deleteFile(oldFile)
                 }
@@ -168,7 +171,7 @@ class HuaweiDriveLogic(
 
             directoryCreated?.let { directoryCreated ->
                 // 既存ファイルを削除
-                val oldFile = getFile(driveFilename)
+                val oldFile = getFile(driveFilename, isApplicationFolder)
                 if (null != oldFile) {
                     deleteFile(oldFile)
                 }
