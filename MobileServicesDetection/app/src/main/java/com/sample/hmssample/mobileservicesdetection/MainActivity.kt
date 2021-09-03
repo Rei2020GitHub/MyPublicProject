@@ -1,5 +1,6 @@
 package com.sample.hmssample.mobileservicesdetection
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -29,6 +30,16 @@ class MainActivity : AppCompatActivity() {
                 checkGooglePlayServicesAndHmsAvailable()
             }
         }
+
+        binding.textViewManuFacturer.text = "メーカー：" + HuaweiUtil.getManufacturer()
+        binding.textViewDeviceModel.text = "機種：" + Build.MODEL
+
+        val buildInfo = BuildInfo.getBuild()
+        binding.textViewBuildVersion.text = "ビルドバージョン：$buildInfo"
+
+        val emuiInfo = EmuiInfo.getEMUI()
+        binding.textViewEmuiVersion.text = "EMUIバージョン：$emuiInfo"
+
         updateCheckResult()
     }
 
@@ -55,6 +66,50 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.textViewCheckResult.text = message
+    }
+
+    private fun getEmuiFullVersion(): String {
+        return try {
+            val spaceIndex = Build.DISPLAY.indexOf(" ")
+            val lastIndex = Build.DISPLAY.indexOf("(")
+            if (lastIndex != -1) {
+                Build.DISPLAY.substring(spaceIndex, lastIndex)
+            } else {
+                Build.DISPLAY.substring(spaceIndex)
+            }
+        } catch (e: Exception) { "" }
+    }
+
+    private fun getEmuiDisplayVersion(): String {
+        return getEmuiFullVersion().let { version ->
+            if (version.isNullOrBlank()) {
+                ""
+            } else {
+                version.lastIndexOf(".").let { dotIndex ->
+                    if (dotIndex != -1) {
+                        version.substring(0, dotIndex)
+                    } else {
+                        version
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getEmuiMajorVersion(): String {
+        return getEmuiFullVersion().let { version ->
+            if (version.isNullOrBlank()) {
+                ""
+            } else {
+                version.indexOf(".").let { dotIndex ->
+                    if (dotIndex != -1) {
+                        version.substring(0, dotIndex)
+                    } else {
+                        version
+                    }
+                }
+            }
+        }
     }
 
     private fun checkGooglePlayServicesAvailable() {
