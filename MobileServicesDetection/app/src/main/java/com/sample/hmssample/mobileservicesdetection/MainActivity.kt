@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.textViewManuFacturer.text = "メーカー：" + HuaweiUtil.getManufacturer()
+        binding.textViewHarmonyos.text = "OS：" + if (HuaweiUtil.isHarmonyOS()) "HarmonyOS" else "Android"
         binding.textViewDeviceModel.text = "機種：" + Build.MODEL
 
         val buildInfo = BuildInfo.getBuild()
@@ -39,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         val emuiInfo = EmuiInfo.getEMUI()
         binding.textViewEmuiVersion.text = "EMUIバージョン：$emuiInfo"
+
+        BuildInfo.isOrientationCorrect()
 
         updateCheckResult()
     }

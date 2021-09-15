@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 
 public class HuaweiUtil {
 
+    private static final String HARMONY = "harmony";
+
     public static String getManufacturer() {
         try {
             Class<?> classType = Class.forName("android.os.SystemProperties");
@@ -29,5 +31,20 @@ public class HuaweiUtil {
         }
 
         return manufacturer.equalsIgnoreCase("HUAWEI");
+    }
+
+    public static boolean isHarmonyOS() {
+        try {
+            Class classType = Class.forName("com.huawei.system.BuildEx");
+            Method method = classType.getMethod("getOsBrand");
+            ClassLoader classLoader = classType.getClassLoader();
+            if (classLoader != null && classLoader.getParent() == null) {
+                return HARMONY.equals(method.invoke(classType));
+            }
+        } catch (ClassNotFoundException e) {
+        } catch (NoSuchMethodException e) {
+        } catch (Exception e) {
+        }
+        return false;
     }
 }

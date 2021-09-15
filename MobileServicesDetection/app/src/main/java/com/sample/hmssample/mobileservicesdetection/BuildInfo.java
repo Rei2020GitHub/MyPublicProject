@@ -4,6 +4,10 @@ import android.os.Build;
 
 public class BuildInfo {
     public static boolean isOrientationCorrect() {
+        if (HuaweiUtil.isHarmonyOS()) {
+            return true;
+        }
+
         BuildInfo buildInfo = getBuild();
         if (null == buildInfo) {
             return true;
