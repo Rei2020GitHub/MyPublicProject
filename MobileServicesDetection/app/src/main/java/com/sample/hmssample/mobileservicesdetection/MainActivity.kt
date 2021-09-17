@@ -41,8 +41,6 @@ class MainActivity : AppCompatActivity() {
         val emuiInfo = EmuiInfo.getEMUI()
         binding.textViewEmuiVersion.text = "EMUIバージョン：$emuiInfo"
 
-        BuildInfo.isOrientationCorrect()
-
         updateCheckResult()
     }
 
