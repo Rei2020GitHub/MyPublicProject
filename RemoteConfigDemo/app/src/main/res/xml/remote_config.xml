@@ -1,0 +1,6 @@
+<remoteconfig>
+    <value key="boolean">true</value>
+    <value key="double">1234567890.12</value>
+    <value key="long">123456789012</value>
+    <value key="string">Text</value>
+</remoteconfig>
