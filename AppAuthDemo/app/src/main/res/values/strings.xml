@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AppAuth Demo</string>
+    <string name="button_sign_in_google_id">Sign in with Google Id</string>
+    <string name="button_sign_out">Sign Out(Cancel Authorization)</string>
+</resources>
