@@ -15,20 +15,12 @@ class HttpRequest {
         abstract fun onError(error: VolleyError?)
     }
 
-    abstract class StringResponseCallback : ResponseCallback<String>() {
-        abstract override fun onResponse(response: String?)
-    }
-
-    abstract class JsonObjectResponseCallback : ResponseCallback<JSONObject>() {
-        abstract override fun onResponse(response: JSONObject?)
-    }
-
     fun postFormUrlencodedRequest(
         context: Context,
         url: String,
         headers: MutableMap<String, String>?,
         params: MutableMap<String, String>?,
-        callback: StringResponseCallback?
+        callback: ResponseCallback<String>?
     ) {
         val queue = Volley.newRequestQueue(context)
 
@@ -59,7 +51,7 @@ class HttpRequest {
         url: String,
         headers: MutableMap<String, String>?,
         body: JSONObject?,
-        callback: JsonObjectResponseCallback?
+        callback: ResponseCallback<JSONObject>?
     ) {
         val queue = Volley.newRequestQueue(context)
 

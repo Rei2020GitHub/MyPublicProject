@@ -57,7 +57,7 @@ abstract class BaseAppAuth(
             revocationEndpointUri,
             null,
             params,
-            object : HttpRequest.StringResponseCallback() {
+            object : HttpRequest.ResponseCallback<String>() {
                 override fun onResponse(response: String?) {
                     resetAppAuthState()
                     signOutCallback?.signOutSuccess()
