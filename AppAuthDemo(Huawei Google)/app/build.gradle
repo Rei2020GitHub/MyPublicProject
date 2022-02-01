@@ -1,0 +1,81 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    // Add your signingConfigs and keystore file into add folder
+    signingConfigs {
+        debug {
+            storePassword 'Password'
+            keyAlias 'key0'
+            keyPassword 'Password'
+            storeFile file('keystore.jks')
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            storeFile file('keystore.jks')
+            storePassword 'Password'
+            keyAlias 'key0'
+            keyPassword 'Password'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.sample.hmssample.appauthdemo"
+        minSdkVersion 26
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        dataBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+
+    // AppAuth SDK
+    implementation 'net.openid:appauth:0.11.1'
+    // For decode ID Token
+    implementation 'com.auth0.android:jwtdecode:2.0.0'
+    // Volley
+    implementation 'com.android.volley:volley:1.1.1'
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    testImplementation 'junit:junit:4.+'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
