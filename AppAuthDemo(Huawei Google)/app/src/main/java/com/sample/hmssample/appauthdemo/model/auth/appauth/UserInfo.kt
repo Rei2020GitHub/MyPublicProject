@@ -4,7 +4,7 @@ import com.auth0.android.jwt.JWT
 
 class UserInfo {
     companion object {
-        fun parseGoogleIdToken(idToken: String): UserInfo {
+        fun parseGoogleIdToken(idToken: String, accessToken: String?, refreshToken: String?): UserInfo {
             val jwt = JWT(idToken)
             return UserInfo().apply {
                 this.openId = jwt.subject
@@ -14,10 +14,12 @@ class UserInfo {
                 this.pictureUrl = jwt.claims["picture"]?.asString()
                 this.email = jwt.claims["email"]?.asString()
                 this.emailVerified = jwt.claims["email_verified"]?.asBoolean()
+                this.accessToken = accessToken
+                this.refreshToken = refreshToken
             }
         }
 
-        fun parseHuaweiIdToken(idToken: String): UserInfo {
+        fun parseHuaweiIdToken(idToken: String, accessToken: String?, refreshToken: String?): UserInfo {
             val jwt = JWT(idToken)
             return UserInfo().apply {
                 this.openId = jwt.subject
@@ -25,6 +27,8 @@ class UserInfo {
                 this.pictureUrl = jwt.claims["picture"]?.asString()
                 this.email = jwt.claims["email"]?.asString()
                 this.emailVerified = jwt.claims["email_verified"]?.asBoolean()
+                this.accessToken = accessToken
+                this.refreshToken = refreshToken
             }
         }
     }
@@ -36,4 +40,6 @@ class UserInfo {
     var pictureUrl: String? = null
     var email: String? = null
     var emailVerified: Boolean? = null
+    var accessToken: String? = null
+    var refreshToken: String? = null
 }

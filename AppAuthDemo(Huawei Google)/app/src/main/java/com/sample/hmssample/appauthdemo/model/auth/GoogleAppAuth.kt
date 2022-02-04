@@ -34,7 +34,7 @@ class GoogleAppAuth private constructor() : BaseAppAuth(
         }
     }
 
-    override fun decodeIdToken(idToken: String): UserInfo {
-        return UserInfo.parseGoogleIdToken(idToken)
+    override fun decodeIdToken(idToken: String, accessToken: String?, refreshToken: String?): UserInfo {
+        return UserInfo.parseGoogleIdToken(idToken, accessToken, refreshToken)
     }
 }

@@ -34,7 +34,7 @@ class HuaweiAppAuth private constructor() : BaseAppAuth(
         }
     }
 
-    override fun decodeIdToken(idToken: String): UserInfo {
-        return UserInfo.parseHuaweiIdToken(idToken)
+    override fun decodeIdToken(idToken: String, accessToken: String?, refreshToken: String?): UserInfo {
+        return UserInfo.parseHuaweiIdToken(idToken, accessToken, refreshToken)
     }
 }

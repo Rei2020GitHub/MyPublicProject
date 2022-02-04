@@ -32,6 +32,9 @@ class MainFragment : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate<MainFragmentBinding>(inflater, R.layout.main_fragment, container, false)
 
+        viewModel.openId.observe(viewLifecycleOwner, {
+            binding.textViewOpenId.text = it
+        })
         viewModel.pictureUrl.observe(viewLifecycleOwner, {
             Picasso
                 .get()
@@ -46,8 +49,11 @@ class MainFragment : Fragment() {
         viewModel.email.observe(viewLifecycleOwner, {
             binding.textViewEmail.text = it
         })
-        viewModel.openId.observe(viewLifecycleOwner, {
-            binding.textViewOpenId.text = it
+        viewModel.accessToken.observe(viewLifecycleOwner, {
+            binding.textViewAccessToken.text = it
+        })
+        viewModel.refreshToken.observe(viewLifecycleOwner, {
+            binding.textViewRefreshToken.text = it
         })
         viewModel.textLog.observe(viewLifecycleOwner, {
             binding.textLog.text = it

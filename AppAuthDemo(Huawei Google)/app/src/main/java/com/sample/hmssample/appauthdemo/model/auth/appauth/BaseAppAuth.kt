@@ -74,8 +74,10 @@ abstract class BaseAppAuth(
     }
 
     override fun getUserInfo(): UserInfo? {
-        appAuthState.idToken?.let {
-            return decodeIdToken(it)
+        appAuthState?.let { appAuthState ->
+            appAuthState.idToken?.let {
+                return decodeIdToken(it, appAuthState.accessToken, appAuthState.refreshToken)
+            }
         }
         return null
     }
@@ -120,5 +122,5 @@ abstract class BaseAppAuth(
             }
     }
 
-    protected abstract fun decodeIdToken(idToken: String): UserInfo
+    protected abstract fun decodeIdToken(idToken: String, accessToken: String?, refreshToken: String?): UserInfo
 }

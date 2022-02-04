@@ -19,10 +19,12 @@ class MainViewModel : ViewModel() {
         @JvmField val TAG: String = this.javaClass.simpleName
     }
 
+    val openId = MutableLiveData<String>()
     val pictureUrl = MutableLiveData<String>()
     val name = MutableLiveData<String>()
     val email = MutableLiveData<String>()
-    val openId = MutableLiveData<String>()
+    val accessToken = MutableLiveData<String>()
+    val refreshToken = MutableLiveData<String>()
     val textLog = MutableLiveData<String>("")
 
     private val huaweiAuth: BaseAuth = HuaweiAppAuth.getInstance()
@@ -33,10 +35,12 @@ class MainViewModel : ViewModel() {
             fragment,
             object : SignInCallback {
                 override fun signInSuccess(userInfo: UserInfo) {
+                    openId.postValue(userInfo.openId)
                     pictureUrl.postValue(userInfo.pictureUrl)
                     name.postValue(userInfo.name)
                     email.postValue(userInfo.email)
-                    openId.postValue(userInfo.openId)
+                    accessToken.postValue(userInfo.accessToken)
+                    refreshToken.postValue(userInfo.refreshToken)
 
                     addLog("[" + huaweiAuth.javaClass.simpleName + "] Sign in Huawei Id success")
                 }
@@ -56,10 +60,12 @@ class MainViewModel : ViewModel() {
             fragment,
             object : SignInCallback {
                 override fun signInSuccess(userInfo: UserInfo) {
+                    openId.postValue(userInfo.openId)
                     pictureUrl.postValue(userInfo.pictureUrl)
                     name.postValue(userInfo.name)
                     email.postValue(userInfo.email)
-                    openId.postValue(userInfo.openId)
+                    accessToken.postValue(userInfo.accessToken)
+                    refreshToken.postValue(userInfo.refreshToken)
 
                     addLog("[" + googleAuth.javaClass.simpleName + "] Sign in Google Id success")
                 }

@@ -65,6 +65,28 @@
                     tools:text="Email"
                     />
 
+                <TextView
+                    android:id="@+id/text_view_access_token"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_email"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Access Token"
+                    />
+
+                <TextView
+                    android:id="@+id/text_view_refresh_token"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_access_token"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Refresh Token"
+                    />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
