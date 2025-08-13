@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.title {
+    font-size: 32px;
+    text-align: center;
+    width: 100%;
+    height: 20%;
+    margin: 10px;
+}
+.switch {
+    width: 20%;
+    height: 100%;
+}
+.content {
+    font-size: 32px;
+    text-align: center;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+}
+.back {
+    background-color: blue;
+}

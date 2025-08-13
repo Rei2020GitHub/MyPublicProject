@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.title {
+    font-size: 32px;
+    text-align: center;
+    width: 100%;
+    height: 20%;
+    margin-top: 40px;
+}
+.message {
+    font-size: 32px;
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 100%;
+    height: 40%;
+    margin-top: 10px;
+}
+.back {
+    background-color: blue;
+}

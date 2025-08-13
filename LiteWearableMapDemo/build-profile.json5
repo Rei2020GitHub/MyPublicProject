@@ -1,0 +1,56 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "storeFile": "D:/Project/DevEcoStudioProjects/LiteWearable/LiteWearableMapDemo/keystore.p12",
+          "storePassword": "000000189A5528283C7866B491518B2C7AC15CA8D4D54AB12D0FEC669E5511A40CFCD9485E30A09E",
+          "keyAlias": "alias",
+          "keyPassword": "00000018872D1A45CA63D082A11641AB588CF113F553C1C40145C4950FCB035AEA50F209249D3E35",
+          "signAlg": "SHA256withECDSA",
+          "profile": "D:/Project/DevEcoStudioProjects/LiteWearable/LiteWearableMapDemo/Lite Wearable Map Demo - DebugDebug.p7b",
+          "certpath": "D:/Project/DevEcoStudioProjects/LiteWearable/LiteWearableMapDemo/Debug cert.cer"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "targetSdkVersion": "5.1.0(18)",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": false
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

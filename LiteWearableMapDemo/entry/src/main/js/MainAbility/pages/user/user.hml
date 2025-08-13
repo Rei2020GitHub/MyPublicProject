@@ -1,0 +1,14 @@
+<div class="container">
+    <text class="title">
+        {{ title }}
+    </text>
+    <text class="message">
+        {{ message }}
+    </text>
+    <input class="back"
+           type="button"
+           value="{{ buttonMessage }}"
+           @click="onClickBack"
+            >
+    </input>
+</div>

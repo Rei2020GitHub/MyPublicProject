@@ -1,0 +1,15 @@
+<div class="container">
+    <text class="title">
+        {{ title }}
+    </text>
+    <div class="content">
+        <input class="switch" onchange="onChangeSwitchMyPostionDisplay" checked="{{ switchMyPositionDisplayValue }}" type="checkbox"></input>
+        <text class="text">{{ switchMyPositionDisplayMessage }}</text>
+    </div>
+    <input class="back"
+           type="button"
+           value="{{ buttonMessage }}"
+           @click="onClickBack"
+            >
+    </input>
+</div>

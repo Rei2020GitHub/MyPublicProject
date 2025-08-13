@@ -1,0 +1,114 @@
+<!--
+要素を重ねて表示する場合、stackタグを使うと便利です。また、@swipeを利用すれば、スワイプイベントを検知できます
+https://developer.huawei.com/consumer/en/doc/harmonyos-references/js-lite-components-container-stack#events
+-->
+<stack class="stack-parent"
+       @swipe="onSwipe"
+        >
+    <!-- マップ関連 -->
+    <div class="map_container">
+        <!--
+        imageタグでマップの画像を表示しますが、現時点（２０２５年８月）において、Lite Wearableでは実現できる機能が限定的なので、
+        画像の拡大や縮小、回転等が実現できません。代替案として、ズームアウトの画像とズームインの画像をそれぞれ用意し、切り替えて
+        表示することで、疑似的なズームアウトとズームインを実現します。
+        -->
+        <image src="{{ mapSrc }}"
+               style="
+                       display: {{ mapDisplay }};
+                       height: {{ mapHeight }};
+                       width: {{ mapWidth }};
+                       margin-left: {{ mapLeft }};
+                       margin-top: {{ mapTop }};
+                       "
+                />
+    </div>
+    <!-- アイコン関連 -->
+    <div class="flag_container">
+        <!--
+        imageタグで現在地アイコンを表示しますが、現時点（２０２５年８月）において、Lite Wearableでは実現できる機能が限定的なので、
+        一度表示したimageタグの位置を変えることができません。代替案として、各ズームスケールにおける現在地アイコンをそれぞれ用意します。
+
+        また、Lite Wearableでは、marginの値をマイナスに設定すると、タグの位置が正しく配置されない可能性があるので、回避策として、
+        margin-leftとmargin-right、margin-topとmargin-bottomを同時に用意し、たとえば、margin-leftの値がマイナスの場合、
+        margin-leftの値を空に設定し、margin-rightにmargin-leftの値×(-1)を設定するといった工夫が必要です。
+        -->
+        <image src="{{ meSrc }}"
+               style="
+                       display: {{ meDisplay }};
+                       height: {{ meHeight }};
+                       width: {{ meWidth }};
+                       margin-left: {{ meLeft }};
+                       margin-right: {{ meRight }};
+                       margin-top: {{ meTop }};
+                       margin-bottom: {{ meBottom }};
+                       "
+               @click="onClickMyFlag"
+                />
+        <image src="{{ meSrc }}"
+               style="
+                       display: {{ subMeDisplay }};
+                       height: {{ subMeHeight }};
+                       width: {{ subMeWidth }};
+                       margin-left: {{ subMeLeft }};
+                       margin-right: {{ subMeRight }};
+                       margin-top: {{ subMeTop }};
+                       margin-bottom: {{ subMeBottom }};
+                       "
+               @click="onClickMyFlag"
+                />
+    </div>
+    <!-- UI関連 -->
+    <!--
+    div
+      image/
+      image/
+      ...
+      image/
+    /div
+    というレイアウトにすると、なぜか最後のimageのクリックイベントしか検知できなくなります。
+
+    div
+      image/
+    /div
+    div
+      image/
+    /div
+    というレイアウトにすれば、すべてのimageのクリックイベントが検知できます。
+    -->
+    <div class="ui_container">
+        <image src="common/ui/arrow_left.png"
+               style="height: 15%; width: 15%; margin-right: 20%; margin-bottom: 70%; display: {{ uiArrowLeftDisplay }};"
+               @click="onClickUiLeft"
+                />
+    </div>
+    <div class="ui_container">
+        <image src="common/ui/arrow_right.png"
+               style="height: 15%; width: 15%; margin-left: 20%; margin-bottom: 70%; display: {{ uiArrowRightDisplay }};"
+               @click="onClickUiRight"
+                />
+    </div>
+    <div class="ui_container">
+        <image src="common/ui/arrow_up.png"
+               style="height: 15%; width: 15%; margin-right: 70%; margin-bottom: 20%; display: {{ uiArrowUpDisplay }};"
+               @click="onClickUiUp"
+                />
+    </div>
+    <div class="ui_container">
+        <image src="common/ui/arrow_down.png"
+               style="height: 15%; width: 15%; margin-right: 70%; margin-top: 20%; display: {{ uiArrowDownDisplay }};"
+               @click="onClickUiDown"
+                />
+    </div>
+    <div class="ui_container">
+        <image src="common/ui/zoom_in.png"
+               style="height: 15%; width: 15%; margin-right: 20%; margin-top: 70%; display: {{ uiZoomInDisplay }};"
+               @click="onClickUiZoomIn"
+                />
+    </div>
+    <div class="ui_container">
+        <image src="common/ui/zoom_out.png"
+               style="height: 15%; width: 15%; margin-left: 20%; margin-top: 70%; display: {{ uiZoomOutDisplay }};"
+               @click="onClickUiZoomOut"
+                />
+    </div>
+</stack>
